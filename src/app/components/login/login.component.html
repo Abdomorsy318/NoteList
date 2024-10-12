@@ -1,0 +1,48 @@
+<section class="bg-main-light shadow rounded-4 py-3 my-5 container">
+  <h1 class="h2 text-main text-center py-2">Login</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="submit()">
+    <div>
+      <label for="email">Email</label>
+      <input
+        formControlName="email"
+        type="email"
+        id="email"
+        class="form-control"
+      />
+    </div>
+    @if (loginForm.get('email')?.touched) { @if
+    (loginForm.get('email')?.getError('required')) {
+    <p class="text-danger mt-2">* Email is required</p>
+    } @else if (loginForm.get('email')?.getError('email')) {
+    <p class="text-danger mt-2">* Enter valid email</p>
+    } }
+    <div>
+      <label for="pass">Password</label>
+      <input
+        formControlName="password"
+        type="password"
+        id="pass"
+        class="form-control"
+      />
+    </div>
+    @if ( loginForm.get('password')?.touched) { @if
+    (loginForm.get('password')?.getError('required')) {
+    <p class="text-danger mt-2">* Password is required</p>
+    } }
+
+    <button
+      [disabled]="loginForm.invalid || loadingBtn"
+      type="submit"
+      class="btn-main my-3 d-flex"
+    >
+      Login @if (loadingBtn) {
+      <span class="ms-2 me-0 loader"></span>
+      }
+    </button>
+  </form>
+  @if (errorMsg) { @if (errorMsg == 'done') {
+  <p class="h6 text-main text-center">{{ errorMsg }}</p>
+  } @else {
+  <p class="h6 text-danger text-center">*{{ errorMsg }}</p>
+  } }
+</section>

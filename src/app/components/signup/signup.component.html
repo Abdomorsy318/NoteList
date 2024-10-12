@@ -1,0 +1,93 @@
+<section class="bg-main-light shadow rounded-4 py-3 my-5 container">
+  <h1 class="h2 text-main text-center py-2">SignUp</h1>
+  <form [formGroup]="signUpForm" (ngSubmit)="submit()">
+    <div>
+      <label for="name">Name</label>
+      <input
+        formControlName="name"
+        type="text"
+        id="name"
+        class="form-control"
+      />
+    </div>
+    @if (signUpForm.get('name')?.errors && signUpForm.get('name')?.touched) {
+    @if (signUpForm.get('name')?.getError('required')) {
+    <p class="text-danger mt-2">* Name is required</p>
+    } @else if (signUpForm.get('name')?.getError('minlength')) {
+    <p class="text-danger mt-2">
+      * Name should be more than or equal 3 characters
+    </p>
+    } }
+    <div>
+      <label for="email">Email</label>
+      <input
+        formControlName="email"
+        type="email"
+        id="email"
+        class="form-control"
+      />
+    </div>
+    @if (signUpForm.get('email')?.touched) { @if
+    (signUpForm.get('email')?.getError('required')) {
+    <p class="text-danger mt-2">* Email is required</p>
+    } @else if (signUpForm.get('email')?.getError('email')) {
+    <p class="text-danger mt-2">* Enter valid email</p>
+    } }
+    <div>
+      <label for="pass">Password</label>
+      <input
+        formControlName="password"
+        type="password"
+        id="pass"
+        class="form-control"
+      />
+    </div>
+    @if ( signUpForm.get('password')?.touched) { @if
+    (signUpForm.get('password')?.getError('required')) {
+    <p class="text-danger mt-2">* Password is required</p>
+    } @else if (signUpForm.get('password')?.getError('pattern')) {
+    <p class="text-danger mt-2">* Password is invalid</p>
+    } }
+    <div>
+      <label for="age">Age</label>
+      <input formControlName="age" type="text" id="age" class="form-control" />
+    </div>
+    @if (signUpForm.get('age')?.touched) { @if
+    (signUpForm.get('age')?.getError('required')) {
+    <p class="text-danger mt-2">* Age is required</p>
+    } @else if (signUpForm.get('age')?.getError('pattern')) {
+    <p class="text-danger mt-2">* No accept character</p>
+    } @else if (signUpForm.get('age')?.getError('min')) {
+    <p class="text-danger mt-2">* age should be more than or equal 20</p>
+    } }
+    <div>
+      <label for="phone">Phone</label>
+      <input
+        formControlName="phone"
+        type="tel"
+        id="phone"
+        class="form-control"
+      />
+    </div>
+    @if (signUpForm.get('phone')?.touched) { @if
+    (signUpForm.get('phone')?.getError('required')) {
+    <p class="text-danger mt-2">* Phone is required</p>
+    } @else if (signUpForm.get('phone')?.getError('pattern')) {
+    <p class="text-danger mt-2">* Enter valid phone</p>
+    } }
+    <button
+      [disabled]="signUpForm.invalid || loadingBtn"
+      type="submit"
+      class="btn-main my-3 d-flex"
+    >
+      SignUp @if (loadingBtn) {
+      <span class="ms-2 me-0 loader"></span>
+      }
+    </button>
+  </form>
+  @if (errorMsg) { @if (errorMsg == 'done') {
+  <p class="h2 text-main text-center">{{ errorMsg }}</p>
+  } @else {
+  <p class="h2 text-danger text-center">*{{ errorMsg }}</p>
+  } }
+</section>

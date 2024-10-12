@@ -1,0 +1,126 @@
+@if (loadContent()) {
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+  <span class="loader-content"></span>
+</div>
+} @else {
+
+<section class="min-vh-100" [ngClass]="{ disabled: checkDelete() }">
+  <span
+    class="position-sticky top-50 bg-main-light text-main px-2 py-3 cr"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    (click)="showAdd()"
+  >
+    <i class="fa-solid fa-plus fa-2xl"></i>
+  </span>
+  @if (noteList().length != 0) {
+  <div class="container my-5 py-5">
+    <div class="row g-3 justify-content-center">
+      @for (note of noteList(); track note._id) {
+      <div class="col-10">
+        <div class="border rounded-3 bg-main-light">
+          <h2 class="text-center border-bottom p-1">{{ note.title }}</h2>
+          <p class="px-2">{{ note.content }}</p>
+          <div class="d-flex p-2">
+            <span
+              class="ms-auto cr icons"
+              (click)="showEdit(note)"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+              ><i class="fas fa-edit"></i
+            ></span>
+            <span class="ms-3 cr icons" (click)="deleteNote(note._id)">
+              <i class="fa-regular fa-trash-can fa-lg text-danger"></i>
+            </span>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }@else {
+  <div
+    class="min-vh-70 d-flex justify-content-center align-items-center h5 text-danger"
+  >
+    <p>*{{ notFoundMsg() }}</p>
+  </div>
+  }
+</section>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        @if (changeTitle == 1) {
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Note</h1>
+        } @else {
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Edite Note</h1>
+        }
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            class="form-control"
+            [(ngModel)]="newNote.title"
+          />
+        </div>
+        <div>
+          <label for="content">Content</label>
+          <textarea
+            type="text"
+            id="content"
+            class="form-control"
+            [(ngModel)]="newNote.content"
+          ></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        @if (changeTitle) {
+        <button
+          [disabled]="
+            checkAdd() || newNote.title == '' || newNote.content == ''
+          "
+          type="button"
+          class="btn-main"
+          (click)="addNote()"
+        >
+          Add @if (checkAdd()) {
+          <span class="ms-1 mt-1 me-0 loader-1 align-self-center"></span>
+          }
+        </button>
+        } @else {
+        <button
+          [disabled]="checkAdd()"
+          type="button"
+          class="btn-main"
+          (click)="editNote()"
+        >
+          Edit @if (checkAdd()) {
+          <span class="ms-1 mt-1 me-0 loader-1 align-self-center"></span>
+          }
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+}
